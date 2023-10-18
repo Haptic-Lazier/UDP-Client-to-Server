@@ -21,7 +21,7 @@ int main()
     // Bind the socket to a specific address and port
     sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(54000);
+    serverAddr.sin_port = htons(52010);
     serverAddr.sin_addr.s_addr = INADDR_ANY;
 
     if (bind(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) == -1)

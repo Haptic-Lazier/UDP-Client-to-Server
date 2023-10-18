@@ -1,0 +1,17 @@
+Machine learning is one of the most exciting recent technologies.
+In this class, you learn about the state of the art and also gain practice
+implementing and deploying these machine learning algorithms yourself.
+You've probably used a learning algorithm dozens of times a day without
+knowing it.
+Every time you use a web search engine like Google or Bing to search the
+internet,
+one of the reasons that works so well is because a learning algorithm, one
+implemented
+by Google or Microsoft, has learned how to rank web pages. Every time you
+use Facebook or
+Apple's photo typing application and it recognizes your friends' photos,
+that's
+also machine learning. Every time you read your email and your spam filter
+saves you
+from having to wade through tons of spam email, that's also a learning
+algorithm.

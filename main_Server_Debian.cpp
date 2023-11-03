@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cstring>      // For std::strerror()
 #include <sys/socket.h>
@@ -8,12 +9,10 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     // Create a socket
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sockfd == -1)
-    {
+    if (sockfd == -1) {
         cerr << "Error creating socket: " << strerror(errno) << endl;
         return 1;
     }
@@ -24,8 +23,7 @@ int main()
     serverAddr.sin_port = htons(52010);
     serverAddr.sin_addr.s_addr = INADDR_ANY;
 
-    if (bind(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) == -1)
-    {
+    if (bind(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) == $
         cerr << "Error binding socket: " << strerror(errno) << endl;
         close(sockfd);
         return 1;
@@ -34,22 +32,33 @@ int main()
     sockaddr_in clientAddr;
     socklen_t clientAddrLen = sizeof(clientAddr);
     char buffer[1024];
+    ofstream TransmissionLog("TransmissionLog.txt");
 
-    while (true)
-    {
-        memset(buffer, 0, sizeof(buffer));
-        int bytesReceived = recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr *)&clientAddr, &clientAddrLen);
-        if (bytesReceived == -1)
-        {
+    if (!TransmissionLog.is_open()) {
+        cerr << "Failed to open TransmissionLog.txt for writing." << endl;
+        close(sockfd);
+        return 1;
+    }
+
+    cerr << "Waiting to receive a file..." << endl;
+    while (true) {
+ memset(buffer, 0, sizeof(buffer));
+        int bytesReceived = recvfrom(sockfd, buffer, sizeof(buffer), 0, (str$
+        if (bytesReceived == -1) {
             cerr << "Error receiving data: " << strerror(errno) << endl;
             continue;
         }
-
-        char clientIp[INET_ADDRSTRLEN];
-        inet_ntop(AF_INET, &clientAddr.sin_addr, clientIp, sizeof(clientIp));
-        cout << "Message received from " << clientIp << ": " << buffer << endl;
+        if (std::string(buffer) == "END_OF_FILE_MARKER") {
+            cout << "Received the file and successfully transferred to Desti$
+            string msr = "MSR";
+            sendto(sockfd, msr.c_str(), msr.size() + 1, 0, (struct sockaddr*$
+            break;
+        }
+        TransmissionLog << buffer << endl;
     }
 
     close(sockfd);
+    TransmissionLog.close();
+
     return 0;
 }
